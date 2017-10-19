@@ -49,11 +49,7 @@ public class LakeDetailStockingAdapter extends RecyclerView.Adapter<LakeDetailSt
     @Override
     public void onBindViewHolder(LakeDetailStockingAdapter.ViewHolder holder, int position) {
         final LakeStockingEvent lakeStockingEvent = events.get(position);
-        holder.binding.stockingDate.setText(lakeStockingEvent.getStockDate().toString());
-        holder.binding.fishSpecies.setText((lakeStockingEvent.getFishSpecies()));
-        holder.binding.fishNumber.setText(Integer.toString(lakeStockingEvent.getNumberOfFishStocked()));
-        holder.binding.fishWeight.setText((Float.toString(lakeStockingEvent.getFishPerPound())));
-        holder.binding.hatchery.setText((lakeStockingEvent.getHatchery()));
+        holder.bind(lakeStockingEvent);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class CountyLakesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StockingDatabaseUtil stockingDatabaseUtil = (StockingDatabaseUtil)getArguments().getSerializable(StockingDatabaseUtil.KEY);
-        adapter = new CountiesAdapter(stockingDatabaseUtil.getLakeHistories());
+        adapter = new CountiesAdapter(stockingDatabaseUtil.getCounties());
     }
 
     @Override

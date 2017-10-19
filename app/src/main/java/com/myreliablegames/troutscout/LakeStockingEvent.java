@@ -1,6 +1,8 @@
 package com.myreliablegames.troutscout;
 
+import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
+import android.widget.TextView;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -32,6 +34,16 @@ public class LakeStockingEvent implements Comparable<LakeStockingEvent>, Seriali
         fishPerPound = Float.valueOf(event.getFishPerPound());
         hatchery = event.getHatchery();
         notes = event.getNotes();
+    }
+
+    @BindingAdapter("setTextFromFloat")
+    public static void setTextFromFloat(TextView textView, float value) {
+        textView.setText(String.valueOf(value));
+    }
+
+    @BindingAdapter("setTextFromInt")
+    public static void setTextFromFloat(TextView textView, int value) {
+        textView.setText(String.valueOf(value));
     }
 
     public LocalDate getStockDate() {

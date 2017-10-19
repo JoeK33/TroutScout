@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by Joe on 10/15/2017.
  */
 
-public class LakeStockingHistoryManager {
+public class LakeStockingHistoryFactory {
 
     private List<StockingEvent> stockingEvents = new ArrayList<>();
     private HashMap<Key, List<StockingEvent>> stockingsByLakeAndCounty = new HashMap<>();

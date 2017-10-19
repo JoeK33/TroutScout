@@ -25,7 +25,7 @@ import retrofit2.Retrofit;
 
 public class StockingEventTask {
 
-    private LakeStockingHistoryManager lakeStockingHistoryManager = new LakeStockingHistoryManager();
+    private LakeStockingHistoryFactory lakeStockingHistoryFactory = new LakeStockingHistoryFactory();
 
     private Observable<AllWebStockingEvents> data;
 
@@ -53,7 +53,7 @@ public class StockingEventTask {
                 List<WebStockingEvent> webStockingEvents = stockings.getWebStockingEvents();
                 for (WebStockingEvent event : webStockingEvents) {
                     if (event.getStockingEvent() != null) {
-                        lakeStockingHistoryManager.addStockingEvent(event.getStockingEvent());
+                        lakeStockingHistoryFactory.addStockingEvent(event.getStockingEvent());
                     }
                 }
             }
@@ -74,7 +74,7 @@ public class StockingEventTask {
     }
 
     private void saveDataToDatabase() {
-      List<StockingEvent> events = lakeStockingHistoryManager.getStockingEvents();
+      List<StockingEvent> events = lakeStockingHistoryFactory.getStockingEvents();
 
         for (StockingEvent stockingEvent : events) {
             StockingEvent otherEvent = Select.from(StockingEvent.class).where(

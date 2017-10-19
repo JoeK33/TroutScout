@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="lakeStockingHistory" type="com.myreliablegames.troutscout.LakeStockingHistory"/>
+        <variable name="countyWrapper" type="com.myreliablegames.troutscout.CountyWrapper"/>
     </data>
     <RelativeLayout
         android:id="@+id/item_view"
@@ -14,6 +14,7 @@
             android:id="@+id/lake_county"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{countyWrapper.county}"
             tools:text="King County"/>
 
         <TextView
@@ -21,6 +22,14 @@
             android:layout_below="@+id/lake_county"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{countyWrapper.lakesCountString}"
+            tools:text="69"/>
+
+        <TextView
+            android:layout_below="@+id/number_lakes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{countyWrapper.firstLakeName}"
             tools:text="69"/>
 
     </RelativeLayout>

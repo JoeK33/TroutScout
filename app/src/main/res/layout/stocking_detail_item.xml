@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="lakeStockingEvent" type="com.myreliablegames.troutscout.LakeStockingEvent"/>
     </data>
@@ -13,6 +14,7 @@
             android:id="@+id/stocking_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{lakeStockingEvent.stockDate.toString()}"
             tools:text="April 20, 2017"/>
 
         <TextView
@@ -21,6 +23,7 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{lakeStockingEvent.fishSpecies}"
             tools:text="Rainbow"/>
 
         <TextView
@@ -28,6 +31,7 @@
             android:layout_below="@id/stocking_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:setTextFromInt="@{lakeStockingEvent.numberOfFishStocked}"
             tools:text="420"/>
 
         <TextView
@@ -39,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
+            app:setTextFromFloat="@{lakeStockingEvent.fishPerPound}"
             tools:text="69"/>
 
         <TextView
@@ -48,9 +53,8 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{lakeStockingEvent.hatchery}"
             tools:text="Wallace Falls hatchery"/>
-
-
 
     </RelativeLayout>
 

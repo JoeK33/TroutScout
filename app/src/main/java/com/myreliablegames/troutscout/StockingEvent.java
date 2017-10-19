@@ -6,6 +6,8 @@ import android.support.annotation.Size;
 import com.orm.SugarRecord;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StockingEvent extends SugarRecord<StockingEvent> implements Comparable<StockingEvent>  {
 
@@ -36,20 +38,47 @@ public class StockingEvent extends SugarRecord<StockingEvent> implements Compara
     }
 
     private void cutAndAssignName(String name) {
-        /* Cut the name and county apart.  Name and county are delimited by a 4 letter county code in parentheses e.g. (CLAR) which is ignored.
-        If no county code exists, the county field is made blank.
-        */
-        if (name.contains("(")) {
-            String lakeName = name.substring(0, name.indexOf("(")).trim();
-            String lakeCounty = name.substring(name.indexOf(")") + 1).trim();
-            this.name = lakeName;
-            this.county = lakeCounty;
-        } else {
+
+        // Removes lakes with (1) and (WB) and such in their names or counties or ones with "T28", etc.. after the county code.
+        String regexNum = "\\([0-9A-Z\\)]{1,3}\\)";
+        String regexTNumber = "[A-Z][0-9]{2} ";
+
+        Pattern patternNum = Pattern.compile(regexNum);
+        Pattern patternTNumber = Pattern.compile(regexTNumber);
+
+        Matcher matcherNum = patternNum.matcher(name);
+        Matcher matcherTNumber = patternTNumber.matcher(name);
+
+        if (matcherNum.find() || matcherTNumber.find()) {
             this.name = null;
             return;
         }
 
-        // Remove lake and pond abbreviations if they exist.
+        /* Cut the name and county apart.  Name and county are delimited by a 4 letter county code in parentheses e.g. (CLAR) which is ignored.
+        */
+        if (name.contains("(") && name.contains(")")) {
+            String lakeName = name.substring(0, name.indexOf("(")).trim();
+            String lakeCounty = name.substring(name.indexOf(")") + 1).trim();
+            lakeCounty = lakeCounty.substring(0, lakeCounty.indexOf("-")).trim();
+            this.name = lakeName;
+
+            String regexAnyNumber = "[0-9]";
+            Pattern patternAnyNum = Pattern.compile(regexAnyNumber);
+            Matcher matcherAnyNum = patternAnyNum.matcher(lakeCounty);
+
+            // Final out if numbers sneak into the county.
+            if (matcherAnyNum.find()) {
+                this.name = null;
+                return;
+            }
+            this.county = lakeCounty;
+        } else {
+            // Contains no county code, bail out.
+            this.name = null;
+            return;
+        }
+
+        // Remove lake and pond abbreviations if they exist, replace with word.
         if (this.name.endsWith(" LK")) {
             this.name = this.name.replace(" LK", " LAKE");
         }

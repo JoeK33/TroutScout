@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="lakeStockingHistory"
+            type="com.myreliablegames.troutscout.LakeStockingHistory" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -8,19 +14,21 @@
         <TextView
             android:id="@+id/lake_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:text="@{lakeStockingHistory.lakeName}" />
 
         <TextView
             android:id="@+id/lake_county"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/lake_name" />
+            android:layout_below="@+id/lake_name"
+            android:text="@{lakeStockingHistory.county}" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_below="@+id/lake_county"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/lake_county" />
 
     </RelativeLayout>
 </layout>

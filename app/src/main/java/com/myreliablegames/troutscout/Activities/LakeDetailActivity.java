@@ -9,7 +9,6 @@ import com.myreliablegames.troutscout.Adapters.LakesAdapter;
 import com.myreliablegames.troutscout.Fragments.LakeDetailFragment;
 import com.myreliablegames.troutscout.LakeStockingHistory;
 import com.myreliablegames.troutscout.R;
-import com.myreliablegames.troutscout.databinding.ActivityLakeDetailsBinding;
 
 /**
  * Created by Joe on 10/15/2017.
@@ -17,13 +16,12 @@ import com.myreliablegames.troutscout.databinding.ActivityLakeDetailsBinding;
 
 public class LakeDetailActivity extends AppCompatActivity {
 
-    private ActivityLakeDetailsBinding binding;
     private LakeStockingHistory history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_lake_details);
+        DataBindingUtil.setContentView(this, R.layout.activity_lake_details);
 
         history = (LakeStockingHistory) getIntent().getSerializableExtra(LakesAdapter.TAG);
 

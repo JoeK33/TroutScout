@@ -28,7 +28,7 @@
             android:label="@string/lake_detail">
         </activity>
         <meta-data android:name="DATABASE" android:value="stocking_events.db" />
-        <meta-data android:name="VERSION" android:value="4" />
+        <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.myreliablegames.troutscout" />
     </application>

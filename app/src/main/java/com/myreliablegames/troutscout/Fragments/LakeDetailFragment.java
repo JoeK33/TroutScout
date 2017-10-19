@@ -53,8 +53,7 @@ public class LakeDetailFragment extends Fragment {
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.lakeName.setText(history.getLakeName());
-        binding.lakeCounty.setText((history.getCounty()));
+        binding.setLakeStockingHistory(history);
         binding.recyclerView.setAdapter(adapter);
     }
 

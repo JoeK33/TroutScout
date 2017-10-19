@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.myreliablegames.troutscout.LakeStockingHistory;
 import com.myreliablegames.troutscout.R;
+import com.myreliablegames.troutscout.CountyWrapper;
 import com.myreliablegames.troutscout.databinding.CountyItemBinding;
 
 import java.util.List;
@@ -17,10 +17,10 @@ import java.util.List;
 
 public class CountiesAdapter extends RecyclerView.Adapter<CountiesAdapter.ViewHolder> {
 
-    private List<LakeStockingHistory> lakes;
+    private List<CountyWrapper> counties;
 
-    public CountiesAdapter (List<LakeStockingHistory> lakes) {
-        this.lakes = lakes;
+    public CountiesAdapter (List<CountyWrapper> counties) {
+        this.counties = counties;
     }
 
     @Override
@@ -32,14 +32,13 @@ public class CountiesAdapter extends RecyclerView.Adapter<CountiesAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final LakeStockingHistory lakeStockingHistory = lakes.get(position);
-        holder.binding.lakeCounty.setText(lakeStockingHistory.getCounty());
-        holder.binding.numberLakes.setText(Integer.toString(lakeStockingHistory.getStockings().size()));
+        final CountyWrapper countyWrapper = counties.get(position);
+        holder.bind(countyWrapper);
     }
 
     @Override
     public int getItemCount() {
-        return lakes.size();
+        return counties.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,8 +50,8 @@ public class CountiesAdapter extends RecyclerView.Adapter<CountiesAdapter.ViewHo
             this.binding = binding;
         }
 
-        public void bind(LakeStockingHistory lakeStockingHistory) {
-            binding.setLakeStockingHistory(lakeStockingHistory);
+        public void bind(CountyWrapper countyWrapper) {
+            binding.setCountyWrapper(countyWrapper);
             binding.executePendingBindings();
         }
     }
