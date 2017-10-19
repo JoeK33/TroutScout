@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="lakeStockingEvent" type="com.myreliablegames.troutscout.LakeStockingEvent"/>
+    </data>
+    <RelativeLayout
+        android:id="@+id/stocking_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/stocking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="April 20, 2017"/>
+
+        <TextView
+            android:id="@+id/fish_species"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Rainbow"/>
+
+        <TextView
+            android:id="@+id/fish_number"
+            android:layout_below="@id/stocking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="420"/>
+
+        <TextView
+            android:id="@+id/fish_weight"
+            android:layout_below="@id/stocking_date"
+            android:layout_toRightOf="@+id/fish_number"
+            android:layout_toEndOf="@+id/fish_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            tools:text="69"/>
+
+        <TextView
+            android:id="@+id/hatchery"
+            android:layout_below="@id/fish_species"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Wallace Falls hatchery"/>
+
+
+
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        applicationId "com.myreliablegames.troutscout"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        free {
+            applicationId "com.myreliablegames.troutscout.free"
+            versionName "1.0-free"
+            buildConfigField "boolean", "PAID_VERSION", "false"
+        }
+
+        paid {
+            applicationId "com.myreliablegames.troutscout.paid"
+            versionName "1.0-paid"
+            buildConfigField "boolean", "PAID_VERSION", "true"
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
+    compile 'com.android.support:support-vector-drawable:26.0.0-alpha1'
+    compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    compile 'javax.annotation:jsr250-api:1.0'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
+    compile 'com.github.satyan:sugar:1.3'
+    compile 'net.danlew:android.joda:2.9.9'
+
+    compile 'pl.droidsonroids:jspoon:1.0.0'
+    compile 'pl.droidsonroids.retrofit2:converter-jspoon:1.0.0'
+
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    testCompile 'junit:junit:4.12'
+}

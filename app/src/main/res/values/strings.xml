@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Trout Scout</string>
+    <string name="lake_detail">Lake Information</string>
+
+    //Tabs
+    <string name="tab_favorites">Favorite Lakes</string>
+    <string name="tab_recent">Recent Stockings</string>
+    <string name="tab_county">By County</string>
+    <string name="tab_all_lakes">All Lakes</string>
+
+    // Misc
+    <string name="BASE_URL">http://wdfw.wa.gov/fishing/plants/weekly/</string>
+
+</resources>

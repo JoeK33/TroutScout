@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="lakeStockingHistory"
+            type="com.myreliablegames.troutscout.LakeStockingHistory" />
+    </data>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="20dp"
+        card_view:cardElevation="5dp">
+
+        <RelativeLayout
+            android:id="@+id/item_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lake_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@{lakeStockingHistory.lakeName}"
+                tools:text="Lake Name" />
+
+            <TextView
+                android:id="@+id/lake_county"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lake_name"
+                android:text="@{lakeStockingHistory.county}"
+                tools:text="King County" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</layout>
