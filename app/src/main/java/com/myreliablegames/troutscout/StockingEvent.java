@@ -38,27 +38,15 @@ public class StockingEvent extends SugarRecord<StockingEvent> implements Compara
     }
 
     private void cutAndAssignName(String name) {
+        // Matcher to split name and counties into seperate fields. regex on the county code indicates the split.
+        String regexCountyCode = "\\([0-9A-Z\\)]{4}\\)";
+        Pattern pattern = Pattern.compile(regexCountyCode);
+        Matcher matcher = pattern.matcher(name);
 
-        // Removes lakes with (1) and (WB) and such in their names or counties or ones with "T28", etc.. after the county code.
-        String regexNum = "\\([0-9A-Z\\)]{1,3}\\)";
-        String regexTNumber = "[A-Z][0-9]{2} ";
-
-        Pattern patternNum = Pattern.compile(regexNum);
-        Pattern patternTNumber = Pattern.compile(regexTNumber);
-
-        Matcher matcherNum = patternNum.matcher(name);
-        Matcher matcherTNumber = patternTNumber.matcher(name);
-
-        if (matcherNum.find() || matcherTNumber.find()) {
-            this.name = null;
-            return;
-        }
-
-        /* Cut the name and county apart.  Name and county are delimited by a 4 letter county code in parentheses e.g. (CLAR) which is ignored.
-        */
-        if (name.contains("(") && name.contains(")")) {
-            String lakeName = name.substring(0, name.indexOf("(")).trim();
-            String lakeCounty = name.substring(name.indexOf(")") + 1).trim();
+        // Look for the county code
+        if (matcher.find()) {
+            String lakeName = name.substring(0, matcher.start()).trim();
+            String lakeCounty = name.substring(matcher.end() + 1).trim();
             lakeCounty = lakeCounty.substring(0, lakeCounty.indexOf("-")).trim();
             this.name = lakeName;
 
@@ -66,7 +54,7 @@ public class StockingEvent extends SugarRecord<StockingEvent> implements Compara
             Pattern patternAnyNum = Pattern.compile(regexAnyNumber);
             Matcher matcherAnyNum = patternAnyNum.matcher(lakeCounty);
 
-            // Final out if numbers sneak into the county.
+            // bail out if numbers sneak into the county.
             if (matcherAnyNum.find()) {
                 this.name = null;
                 return;
@@ -87,12 +75,36 @@ public class StockingEvent extends SugarRecord<StockingEvent> implements Compara
             this.name = this.name.replace("LK ", "LAKE ");
         }
 
+        if (this.name.contains(" LK ")) {
+            this.name = this.name.replace(" LK ", " LAKE ");
+        }
+
+        if (this.name.endsWith(" LKS")) {
+            this.name = this.name.replace(" LKS", " LAKES");
+        }
+
         if (this.name.startsWith("W ")) {
             this.name = this.name.replace("W ", "WEST ");
         }
 
         if (this.name.endsWith(" PD")) {
             this.name = this.name.replace(" PD", " POND");
+        }
+
+        if (this.name.contains(" PD ")) {
+            this.name = this.name.replace(" PD ", " POND ");
+        }
+
+        if (this.name.contains(" HRBR ")) {
+            this.name = this.name.replace(" HRBR ", " HARBOR ");
+        }
+
+        if (this.name.contains(" EVNT ")) {
+            this.name = this.name.replace(" EVNT ", " EVENT ");
+        }
+
+        if (this.name.startsWith("LTL ")) {
+            this.name = this.name.replace("LTL ", "LITTLE ");
         }
 
         if (this.name.endsWith(" LTL")) {

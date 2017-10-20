@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.myreliablegames.troutscout.Fragments.AllLakesFragment;
-import com.myreliablegames.troutscout.Fragments.CountyLakesFragment;
+import com.myreliablegames.troutscout.Fragments.CountyLakesPagerFragment;
 import com.myreliablegames.troutscout.Fragments.FavoritesFragment;
 import com.myreliablegames.troutscout.Fragments.RecentStockingFragment;
 import com.myreliablegames.troutscout.R;
@@ -61,12 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        stockingDatabaseUtil = new StockingDatabaseUtil();
+        stockingDatabaseUtil = StockingDatabaseUtil.getInstance();
 
         createAndAttachPagerAdapter();
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = fragmentStatePagerAdapter.getItem(TAB_COUNTY);
+        if (fragment != null && fragment.isAdded() && fragment.getChildFragmentManager().getBackStackEntryCount() > 0){
+            fragment.getChildFragmentManager().popBackStack();
+        } else{
+            super.onBackPressed();
+        }
+    }
+
     private void createAndAttachPagerAdapter() {
+        final CountyLakesPagerFragment countyLakesPagerFragment = CountyLakesPagerFragment.newInstance(stockingDatabaseUtil);
         fragmentStatePagerAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -76,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     case TAB_FAVORITES:
                         return FavoritesFragment.newInstance(stockingDatabaseUtil);
                     case TAB_COUNTY:
-                        return CountyLakesFragment.newInstance(stockingDatabaseUtil);
+                        return countyLakesPagerFragment;
                     case TAB_ALL:
                         return AllLakesFragment.newInstance(stockingDatabaseUtil);
                 }

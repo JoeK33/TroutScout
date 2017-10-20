@@ -49,7 +49,6 @@ public class StockingEventTask {
         DisposableObserver<AllWebStockingEvents> observer = new DisposableObserver<AllWebStockingEvents>() {
             @Override
             public void onNext(@NonNull AllWebStockingEvents stockings) {
-                Logger.i("Rx", "next");
                 List<WebStockingEvent> webStockingEvents = stockings.getWebStockingEvents();
                 for (WebStockingEvent event : webStockingEvents) {
                     if (event.getStockingEvent() != null) {
@@ -60,13 +59,11 @@ public class StockingEventTask {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Logger.i("Rx", "error");
                 e.printStackTrace();
             }
 
             @Override
             public void onComplete() {
-                Logger.i("Rx", "complete");
                 saveDataToDatabase();
             }
         };
@@ -74,22 +71,34 @@ public class StockingEventTask {
     }
 
     private void saveDataToDatabase() {
-      List<StockingEvent> events = lakeStockingHistoryFactory.getStockingEvents();
+        lakeStockingHistoryFactory.getStockingEvents().subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+            @Override
+            public void onNext(@NonNull List<StockingEvent> stockingEvents) {
+                for (StockingEvent stockingEvent : stockingEvents) {
+                    StockingEvent otherEvent = Select.from(StockingEvent.class).where(
+                            Condition.prop("name").eq(stockingEvent.getName()),
+                            Condition.prop("county").eq(stockingEvent.getCounty()),
+                            Condition.prop("stock_date").eq(stockingEvent.getStockDate()),
+                            Condition.prop("fish_species").eq(stockingEvent.getFishSpecies()),
+                            Condition.prop("number_of_fish_stocked").eq(stockingEvent.getNumberOfFishStocked())).first();
 
-        for (StockingEvent stockingEvent : events) {
-            StockingEvent otherEvent = Select.from(StockingEvent.class).where(
-                    Condition.prop("name").eq(stockingEvent.getName()),
-                    Condition.prop("county").eq(stockingEvent.getCounty()),
-                    Condition.prop("stock_date").eq(stockingEvent.getStockDate()),
-                    Condition.prop("fish_species").eq(stockingEvent.getFishSpecies()),
-                    Condition.prop("number_of_fish_stocked").eq(stockingEvent.getNumberOfFishStocked())).first();
-
-            // only save events that are not found.
-            if (otherEvent == null) {
-                stockingEvent.save();
+                    // only save events that are not found.
+                    if (otherEvent == null) {
+                        stockingEvent.save();
+                    }
+                }
+                Logger.i("Database count", Long.toString(StockingEvent.count(StockingEvent.class, null, null)));
             }
-        }
 
-        Logger.i("Database count", Long.toString(StockingEvent.count(StockingEvent.class, null, null)));
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }

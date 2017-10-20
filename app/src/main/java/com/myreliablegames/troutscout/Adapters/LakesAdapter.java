@@ -12,6 +12,7 @@ import com.myreliablegames.troutscout.LakeStockingHistory;
 import com.myreliablegames.troutscout.R;
 import com.myreliablegames.troutscout.databinding.LakeItemBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,8 +25,12 @@ public class LakesAdapter extends RecyclerView.Adapter<LakesAdapter.ViewHolder> 
 
     private List<LakeStockingHistory> lakes;
 
-    public LakesAdapter (List<LakeStockingHistory> lakes) {
+    public LakesAdapter(List<LakeStockingHistory> lakes) {
         this.lakes = lakes;
+    }
+
+    public LakesAdapter() {
+        this.lakes = new ArrayList<>();
     }
 
     @Override
@@ -67,5 +72,10 @@ public class LakesAdapter extends RecyclerView.Adapter<LakesAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return lakes.size();
+    }
+
+    public void replaceItems(List<LakeStockingHistory> items) {
+        lakes.clear();
+        lakes.addAll(items);
     }
 }

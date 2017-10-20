@@ -5,6 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by Joe on 10/15/2017.
@@ -14,11 +22,30 @@ public class LakeStockingHistoryFactory {
 
     private List<StockingEvent> stockingEvents = new ArrayList<>();
     private HashMap<Key, List<StockingEvent>> stockingsByLakeAndCounty = new HashMap<>();
+    private Observable<List<StockingEvent>> events;
 
-    public void acceptStockingEvents(List<StockingEvent> events) {
-        for (StockingEvent event : events) {
-            addStockingEvent(event);
-        }
+    public void acceptStockingEvents(final Observable<List<StockingEvent>> events) {
+        this.events = events;
+
+        events.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+            @Override
+            public void onNext(@NonNull List<StockingEvent> stockingEvents) {
+                Logger.e("Next stocking event");
+                for (StockingEvent event : stockingEvents) {
+                    addStockingEvent(event);
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     public void addStockingEvent(StockingEvent event) {
@@ -41,28 +68,75 @@ public class LakeStockingHistoryFactory {
         }
     }
 
-    public List<LakeStockingHistory> getLakeHistories() {
-        List<LakeStockingHistory> histories = new ArrayList<>();
-        Set<Key> lakes = stockingsByLakeAndCounty.keySet();
+    public Observable<List<LakeStockingHistory>> getLakeHistories() {
+        final List<LakeStockingHistory> histories = new ArrayList<>();
+        final Set<Key> lakes = stockingsByLakeAndCounty.keySet();
 
-        for(Key lake : lakes) {
-            LakeStockingHistory lakeStockingHistory = new LakeStockingHistory();
-            lakeStockingHistory.setLakeName(lake.getName());
-            lakeStockingHistory.setCounty(lake.getCounty());
+        return Observable.create(new ObservableOnSubscribe<List<LakeStockingHistory>>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<List<LakeStockingHistory>> e) throws Exception {
+                Logger.e("subscribed to lake histories");
 
-            List<LakeStockingEvent> lakeEvents = new ArrayList<>();
-            for (StockingEvent event : stockingsByLakeAndCounty.get(lake)) {
-                lakeEvents.add(new LakeStockingEvent(event));
+                // Subscribe to the database call to kick this off when the things load.
+                events.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+                    @Override
+                    public void onNext(@NonNull List<StockingEvent> stockingEvents) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        for (Key lake : lakes) {
+                            LakeStockingHistory lakeStockingHistory = new LakeStockingHistory();
+                            lakeStockingHistory.setLakeName(lake.getName());
+                            lakeStockingHistory.setCounty(lake.getCounty());
+
+                            List<LakeStockingEvent> lakeEvents = new ArrayList<>();
+                            for (StockingEvent event : stockingsByLakeAndCounty.get(lake)) {
+                                lakeEvents.add(new LakeStockingEvent(event));
+                            }
+                            lakeStockingHistory.setStockings(lakeEvents);
+                            histories.add(lakeStockingHistory);
+                            // sent whole list every 20 lakes as they are added
+                            if (histories.size() % 20 == 0) {
+                                e.onNext(histories);
+                            }
+                        }
+                        e.onNext(histories);
+                        e.onComplete();
+                        Logger.e("complete events in lake histories");
+                    }
+                });
             }
-            lakeStockingHistory.setStockings(lakeEvents);
-            histories.add(lakeStockingHistory);
-        }
-
-        return histories;
+        });
     }
 
-    public List<StockingEvent> getStockingEvents() {
-        return stockingEvents;
+    public Observable<List<StockingEvent>> getStockingEvents() {
+        return Observable.create(new ObservableOnSubscribe<List<StockingEvent>>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<List<StockingEvent>> e) throws Exception {
+                events.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+                    @Override
+                    public void onNext(@NonNull List<StockingEvent> stockingEvents) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        e.onNext(stockingEvents);
+                        e.onComplete();
+                    }
+                });
+            }
+        });
     }
 
     private class Key {
@@ -75,10 +149,9 @@ public class LakeStockingHistoryFactory {
         }
 
         @Override
-        public boolean equals(Object o)
-        {
+        public boolean equals(Object o) {
             if (o instanceof Key) {
-                Key otherKey = (Key)o;
+                Key otherKey = (Key) o;
                 if ((otherKey.getName().equals(this.name) && otherKey.getCounty().equals(this.county))) {
                     return true;
                 }
@@ -87,8 +160,7 @@ public class LakeStockingHistoryFactory {
         }
 
         @Override
-        public int hashCode()
-        {
+        public int hashCode() {
             return name.hashCode() + county.hashCode();
         }
 
