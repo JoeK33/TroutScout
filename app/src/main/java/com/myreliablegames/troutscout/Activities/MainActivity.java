@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.myreliablegames.troutscout.Fragments.AllLakesFragment;
 import com.myreliablegames.troutscout.Fragments.CountyLakesPagerFragment;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private StockingDatabaseUtil stockingDatabaseUtil;
     private FragmentStatePagerAdapter fragmentStatePagerAdapter;
     private ActivityMainBinding binding;
+    private CountyLakesPagerFragment countyLakesPagerFragment;
 
     private static final int TAB_RECENT = 0;
     private static final int TAB_FAVORITES = 1;
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Fragment fragment = fragmentStatePagerAdapter.getItem(TAB_COUNTY);
+        Fragment fragment = countyLakesPagerFragment;
         if (fragment != null && fragment.isAdded() && fragment.getChildFragmentManager().getBackStackEntryCount() > 0){
             fragment.getChildFragmentManager().popBackStack();
         } else{
@@ -77,30 +80,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createAndAttachPagerAdapter() {
-        final CountyLakesPagerFragment countyLakesPagerFragment = CountyLakesPagerFragment.newInstance(stockingDatabaseUtil);
-        fragmentStatePagerAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                switch (position) {
-                    case TAB_RECENT:
-                        return RecentStockingFragment.newInstance(stockingDatabaseUtil);
-                    case TAB_FAVORITES:
-                        return FavoritesFragment.newInstance(stockingDatabaseUtil);
-                    case TAB_COUNTY:
-                        return countyLakesPagerFragment;
-                    case TAB_ALL:
-                        return AllLakesFragment.newInstance(stockingDatabaseUtil);
-                }
-                return null;
-            }
-
-            @Override
-            public int getCount() {
-                return 4;
-            }
-        };
+        fragmentStatePagerAdapter = new ReferenceSavingFragmentStatePagerAdapter(getSupportFragmentManager());
 
         pager = (ViewPager) findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(3);
         pager.setAdapter(fragmentStatePagerAdapter);
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -135,5 +118,49 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public class ReferenceSavingFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
+
+        public ReferenceSavingFragmentStatePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case TAB_RECENT:
+                    return RecentStockingFragment.newInstance(stockingDatabaseUtil);
+                case TAB_FAVORITES:
+                    return FavoritesFragment.newInstance(stockingDatabaseUtil);
+                case TAB_COUNTY:
+                    return CountyLakesPagerFragment.newInstance(stockingDatabaseUtil);
+                case TAB_ALL:
+                    return AllLakesFragment.newInstance(stockingDatabaseUtil);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        // Here we can finally safely save a reference to the created
+        // Fragment, no matter where it came from (either getItem() or
+        // FragmentManger). Simply save the returned Fragment from
+        // super.instantiateItem() into an appropriate reference depending
+        // on the ViewPager position.
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+            // save the appropriate reference depending on position
+            switch (position) {
+                case TAB_COUNTY:
+                    countyLakesPagerFragment = (CountyLakesPagerFragment) createdFragment;
+                    break;
+            }
+            return createdFragment;
+        }
     }
 }

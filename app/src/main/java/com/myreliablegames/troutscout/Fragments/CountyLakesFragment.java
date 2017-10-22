@@ -83,10 +83,6 @@ public class CountyLakesFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (observer != null && !observer.isDisposed()) {

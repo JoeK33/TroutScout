@@ -63,10 +63,6 @@ public class CountyLakesPagerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-    }
-
     public void openLakesInCounty(CountyWrapper countyWrapper) {
         final FragmentManager childManager = getChildFragmentManager();
 

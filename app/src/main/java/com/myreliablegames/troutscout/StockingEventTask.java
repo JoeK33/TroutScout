@@ -50,6 +50,8 @@ public class StockingEventTask {
             @Override
             public void onNext(@NonNull AllWebStockingEvents stockings) {
                 List<WebStockingEvent> webStockingEvents = stockings.getWebStockingEvents();
+                Logger.e("Got stocking events: " + String.valueOf(webStockingEvents.size()));
+
                 for (WebStockingEvent event : webStockingEvents) {
                     if (event.getStockingEvent() != null) {
                         lakeStockingHistoryFactory.addStockingEvent(event.getStockingEvent());
@@ -85,6 +87,7 @@ public class StockingEventTask {
                     // only save events that are not found.
                     if (otherEvent == null) {
                         stockingEvent.save();
+                    } else {
                     }
                 }
                 Logger.i("Database count", Long.toString(StockingEvent.count(StockingEvent.class, null, null)));

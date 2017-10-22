@@ -42,7 +42,9 @@ public class StockingDatabaseUtil implements Serializable {
         Observable<List<StockingEvent>> observable = Observable.create(new ObservableOnSubscribe<List<StockingEvent>>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<List<StockingEvent>> e) throws Exception {
+                Logger.e("Subscribed to stocking events");
                 List<StockingEvent> allEvents = Select.from(StockingEvent.class).list();
+                Logger.e("Database entries: " + String.valueOf(allEvents.size()));
                 e.onNext(allEvents);
                 e.onComplete();
             }
@@ -83,6 +85,7 @@ public class StockingDatabaseUtil implements Serializable {
                         }
 
                         Collections.sort(counties);
+                        Logger.e("County Next");
                         emitter.onNext(counties);
                     }
 
@@ -93,8 +96,8 @@ public class StockingDatabaseUtil implements Serializable {
 
                     @Override
                     public void onComplete() {
-                        emitter.onComplete();
                         Logger.e("Counties complete");
+                        emitter.onComplete();
                     }
                 });
             }

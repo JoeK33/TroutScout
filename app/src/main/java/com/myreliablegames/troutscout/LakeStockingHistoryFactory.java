@@ -8,10 +8,8 @@ import java.util.Set;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -27,7 +25,7 @@ public class LakeStockingHistoryFactory {
     public void acceptStockingEvents(final Observable<List<StockingEvent>> events) {
         this.events = events;
 
-        events.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+        events.subscribeWith(new DisposableObserver<List<StockingEvent>>() {
             @Override
             public void onNext(@NonNull List<StockingEvent> stockingEvents) {
                 Logger.e("Next stocking event");
@@ -43,7 +41,7 @@ public class LakeStockingHistoryFactory {
 
             @Override
             public void onComplete() {
-
+                Logger.e("Complete stocking events");
             }
         });
     }
@@ -78,7 +76,7 @@ public class LakeStockingHistoryFactory {
                 Logger.e("subscribed to lake histories");
 
                 // Subscribe to the database call to kick this off when the things load.
-                events.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+                events.subscribeWith(new DisposableObserver<List<StockingEvent>>() {
                     @Override
                     public void onNext(@NonNull List<StockingEvent> stockingEvents) {
                     }
@@ -106,8 +104,8 @@ public class LakeStockingHistoryFactory {
                             }
                         }
                         e.onNext(histories);
-                        e.onComplete();
                         Logger.e("complete events in lake histories");
+                        e.onComplete();
                     }
                 });
             }
@@ -118,23 +116,9 @@ public class LakeStockingHistoryFactory {
         return Observable.create(new ObservableOnSubscribe<List<StockingEvent>>() {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<List<StockingEvent>> e) throws Exception {
-                events.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
-                    @Override
-                    public void onNext(@NonNull List<StockingEvent> stockingEvents) {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        e.onNext(stockingEvents);
-                        e.onComplete();
-                    }
-                });
+                Logger.e("subscribed to stocking events for database save");
+                e.onNext(stockingEvents);
+                e.onComplete();
             }
         });
     }
