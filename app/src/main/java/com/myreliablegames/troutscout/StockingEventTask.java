@@ -29,6 +29,7 @@ public class StockingEventTask {
 
     private Observable<AllWebStockingEvents> data;
 
+
     public StockingEventTask(Resources resources) {
 
         Retrofit retrofit = new Retrofit.Builder()

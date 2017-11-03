@@ -15,11 +15,14 @@ import com.myreliablegames.troutscout.StockingDatabaseUtil;
 import com.myreliablegames.troutscout.databinding.FragmentAllLakesBinding;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Joe on 10/15/2017.
@@ -66,9 +69,10 @@ public class AllLakesFragment extends Fragment {
 
             observer = new DisposableObserver<List<LakeStockingHistory>>() {
                 @Override
-                public void onNext(@NonNull List<LakeStockingHistory> lakeStockingHistories) {
-                    Collections.sort(lakeStockingHistories);
-                    adapter.replaceItems(lakeStockingHistories);
+                public void onNext(final @NonNull List<LakeStockingHistory> lakeStockingHistories) {
+                    ArrayList<LakeStockingHistory> lakeStockingHistorySort = new ArrayList<>(lakeStockingHistories);
+                    Collections.sort(lakeStockingHistorySort);
+                    adapter.replaceItems(lakeStockingHistorySort);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -82,7 +86,7 @@ public class AllLakesFragment extends Fragment {
                 }
             };
 
-            util.getLakeHistories().subscribeWith(observer);
+            util.getLakeHistories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(observer);
         }
     }
 

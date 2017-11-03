@@ -12,8 +12,10 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Joe on 10/15/2017.
@@ -62,12 +64,14 @@ public class StockingDatabaseUtil implements Serializable {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<List<CountyWrapper>> emitter) throws Exception {
                 Logger.e("Subscribed to counties");
-                getLakeHistories().subscribeWith(new DisposableObserver<List<LakeStockingHistory>>() {
+                getLakeHistories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<LakeStockingHistory>>() {
                     @Override
-                    public void onNext(@NonNull List<LakeStockingHistory> lakeStockingHistories) {
+                    public void onNext(final @NonNull List<LakeStockingHistory> lakeStockingHistories) {
+                        List<LakeStockingHistory> lakeStockingHistories1 = new ArrayList<LakeStockingHistory>(lakeStockingHistories);
                         final List<CountyWrapper> counties = new ArrayList<>();
                         final HashMap<String, List<LakeStockingHistory>> countiesMap = new HashMap<>();
-                        for (LakeStockingHistory history : lakeStockingHistories) {
+
+                        for (LakeStockingHistory history : lakeStockingHistories1) {
                             if (countiesMap.containsKey(history.getCounty())) {
                                 countiesMap.get(history.getCounty()).add(history);
                             } else {
