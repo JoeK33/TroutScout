@@ -17,8 +17,10 @@ import com.myreliablegames.troutscout.databinding.FragmentCountyBinding;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Joe on 10/15/2017.
@@ -30,20 +32,15 @@ public class CountyLakesFragment extends Fragment {
     private CountiesAdapter adapter;
     private DisposableObserver<List<CountyWrapper>> observer;
 
-    public static CountyLakesFragment newInstance(StockingDatabaseUtil stockingDatabaseUtil) {
+    public static CountyLakesFragment newInstance() {
         CountyLakesFragment fragment = new CountyLakesFragment();
-
-        Bundle args = new Bundle();
-        args.putSerializable(StockingDatabaseUtil.KEY, stockingDatabaseUtil);
-        fragment.setArguments(args);
-
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StockingDatabaseUtil stockingDatabaseUtil = (StockingDatabaseUtil) getArguments().getSerializable(StockingDatabaseUtil.KEY);
+        StockingDatabaseUtil stockingDatabaseUtil = StockingDatabaseUtil.getInstance();
         adapter = new CountiesAdapter((CountyLakesPagerFragment) getParentFragment());
 
         observer = new DisposableObserver<List<CountyWrapper>>() {
@@ -65,7 +62,7 @@ public class CountyLakesFragment extends Fragment {
             }
         };
 
-        stockingDatabaseUtil.getCounties().subscribeWith(observer);
+        stockingDatabaseUtil.getCounties().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(observer);
     }
 
     @Override

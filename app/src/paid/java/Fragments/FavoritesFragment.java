@@ -1,4 +1,4 @@
-package com.myreliablegames.troutscout.Fragments;
+package Fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import com.myreliablegames.troutscout.R;
 import com.myreliablegames.troutscout.databinding.FragmentFavoritesBinding;
 
 /**
- * Created by Joe on 10/15/2017.
+ * Created by Joe on 11/5/2017.
  */
 
 public class FavoritesFragment extends Fragment {

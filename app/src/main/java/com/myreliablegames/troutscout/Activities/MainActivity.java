@@ -23,7 +23,6 @@ import com.myreliablegames.troutscout.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager pager;
-    private StockingDatabaseUtil stockingDatabaseUtil;
     private FragmentStatePagerAdapter fragmentStatePagerAdapter;
     private ActivityMainBinding binding;
     private CountyLakesPagerFragment countyLakesPagerFragment;
@@ -61,11 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        stockingDatabaseUtil = StockingDatabaseUtil.getInstance();
-
         createAndAttachPagerAdapter();
     }
 
@@ -130,13 +126,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case TAB_RECENT:
-                    return RecentStockingFragment.newInstance(stockingDatabaseUtil);
+                    return RecentStockingFragment.newInstance();
                 case TAB_FAVORITES:
-                    return FavoritesFragment.newInstance(stockingDatabaseUtil);
+                    return FavoritesFragment.newInstance();
                 case TAB_COUNTY:
-                    return CountyLakesPagerFragment.newInstance(stockingDatabaseUtil);
+                    return CountyLakesPagerFragment.newInstance();
                 case TAB_ALL:
-                    return AllLakesFragment.newInstance(stockingDatabaseUtil);
+                    return AllLakesFragment.newInstance();
             }
             return null;
         }

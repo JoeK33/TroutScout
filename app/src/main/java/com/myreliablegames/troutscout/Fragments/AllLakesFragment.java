@@ -35,13 +35,8 @@ public class AllLakesFragment extends Fragment {
     private LakesAdapter adapter;
     private DisposableObserver observer;
 
-    public static AllLakesFragment newInstance(StockingDatabaseUtil stockingDatabaseUtil) {
+    public static AllLakesFragment newInstance() {
         AllLakesFragment fragment = new AllLakesFragment();
-
-        Bundle args = new Bundle();
-        args.putSerializable(StockingDatabaseUtil.KEY, stockingDatabaseUtil);
-        fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -60,13 +55,12 @@ public class AllLakesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         adapter = new LakesAdapter();
 
-        if (getArguments().containsKey(LAKE_LIST_KEY)) {
+        if (getArguments() != null && getArguments().containsKey(LAKE_LIST_KEY)) {
             List<LakeStockingHistory> lakes = (List<LakeStockingHistory>) getArguments().getSerializable(LAKE_LIST_KEY);
             adapter.replaceItems(lakes);
             adapter.notifyDataSetChanged();
-        } else if (getArguments().containsKey(StockingDatabaseUtil.KEY)) {
-            StockingDatabaseUtil util = (StockingDatabaseUtil) getArguments().getSerializable(StockingDatabaseUtil.KEY);
-
+        } else {
+            StockingDatabaseUtil util = StockingDatabaseUtil.getInstance();
             observer = new DisposableObserver<List<LakeStockingHistory>>() {
                 @Override
                 public void onNext(final @NonNull List<LakeStockingHistory> lakeStockingHistories) {

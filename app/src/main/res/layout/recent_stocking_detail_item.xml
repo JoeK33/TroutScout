@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="stockingEvent" type="com.myreliablegames.troutscout.StockingEvent"/>
+    </data>
+    <RelativeLayout
+        android:id="@+id/stocking_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lake_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{stockingEvent.name}"
+            tools:text="Fish Lake"/>
+
+        <TextView
+            android:id="@+id/lake_county"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:text="@{stockingEvent.county}"
+            tools:text="King County"/>
+
+        <TextView
+            android:id="@+id/stocking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lake_name"
+            android:text="@{stockingEvent.stockDate}"
+            tools:text="April 20, 2017"/>
+
+        <TextView
+            android:id="@+id/fish_species"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{stockingEvent.fishSpecies}"
+            tools:text="Rainbow"/>
+
+        <TextView
+            android:id="@+id/fish_number"
+            android:layout_below="@id/stocking_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{stockingEvent.numberOfFishStocked}"
+            tools:text="420"/>
+
+        <TextView
+            android:id="@+id/fish_weight"
+            android:layout_below="@id/stocking_date"
+            android:layout_toRightOf="@+id/fish_number"
+            android:layout_toEndOf="@+id/fish_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="@{stockingEvent.fishPerPound}"
+            tools:text="69"/>
+
+        <TextView
+            android:id="@+id/hatchery"
+            android:layout_below="@id/fish_species"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{stockingEvent.hatchery}"
+            tools:text="Wallace Falls hatchery"/>
+
+    </RelativeLayout>
+
+</layout>

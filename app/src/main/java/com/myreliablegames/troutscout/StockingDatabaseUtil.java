@@ -2,10 +2,15 @@ package com.myreliablegames.troutscout;
 
 import com.orm.query.Select;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +59,54 @@ public class StockingDatabaseUtil implements Serializable {
 
         lakeStockingHistoryFactory.acceptStockingEvents(observable);
         return lakeStockingHistoryFactory.getLakeHistories();
+    }
+
+    public Observable<List<StockingEvent>> getRecentLakeStockings() {
+        Logger.e("Subscribed to recent stocking events");
+        final Observable<List<StockingEvent>> recentLakeStockings = Observable.create(new ObservableOnSubscribe<List<StockingEvent>>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<List<StockingEvent>> e) throws Exception {
+                Observable.create(new ObservableOnSubscribe<List<StockingEvent>>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<List<StockingEvent>> e) throws Exception {
+                        List<StockingEvent> allEvents = Select.from(StockingEvent.class).list();
+                        e.onNext(allEvents);
+                        e.onComplete();
+                    }
+                }).subscribeWith(new DisposableObserver<List<StockingEvent>>() {
+                    @Override
+                    public void onNext(@NonNull List<StockingEvent> stockingEvents) {
+
+                        Collections.sort(stockingEvents, new Comparator<StockingEvent>() {
+                            @Override
+                            public int compare(StockingEvent o1, StockingEvent o2) {
+                                // Sort stocking events based on date to get most recent events.
+                                DateTimeFormatter fmt = DateTimeFormat.forPattern("MMM dd, yyyy");
+                                LocalDate stockDate1 = fmt.parseLocalDate(o1.getStockDate());
+                                LocalDate stockDate2 = fmt.parseLocalDate(o2.getStockDate());
+
+                                return stockDate2.compareTo(stockDate1);
+                            }
+                        });
+
+                        // Only grab 20 most recent stocking events.
+                        e.onNext(stockingEvents.subList(0, 20));
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        e.onComplete();
+                        Logger.e("Recent stocking events complete");
+                    }
+                });
+            }
+        });
+        return recentLakeStockings;
     }
 
     /**

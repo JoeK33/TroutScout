@@ -27,13 +27,8 @@ public class CountyLakesPagerFragment extends Fragment {
     private FragmentCountyPagerBinding binding;
     StockingDatabaseUtil stockingDatabaseUtil;
 
-    public static CountyLakesPagerFragment newInstance(StockingDatabaseUtil stockingDatabaseUtil) {
+    public static CountyLakesPagerFragment newInstance() {
         CountyLakesPagerFragment fragment = new CountyLakesPagerFragment();
-
-        Bundle args = new Bundle();
-        args.putSerializable(StockingDatabaseUtil.KEY, stockingDatabaseUtil);
-        fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -43,9 +38,7 @@ public class CountyLakesPagerFragment extends Fragment {
         if (savedInstanceState != null) {
             return;
         }
-        stockingDatabaseUtil = (StockingDatabaseUtil) getArguments().getSerializable(StockingDatabaseUtil.KEY);
-
-        CountyLakesFragment fragment = CountyLakesFragment.newInstance(stockingDatabaseUtil);
+        CountyLakesFragment fragment = CountyLakesFragment.newInstance();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.county_lakes_frame, fragment, COUNTIES_FRAGMENT_TAG);
         transaction.commit();

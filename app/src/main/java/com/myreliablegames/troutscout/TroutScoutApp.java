@@ -7,16 +7,11 @@ import com.orm.SugarApp;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import java.util.List;
-
 /**
  * Created by Joe on 10/14/2017.
  */
 
 public class TroutScoutApp extends SugarApp {
-
-    public List<StockingEvent> lakes;
-    public boolean loaded = false;
 
     @Override
     public void onCreate() {
