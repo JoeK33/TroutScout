@@ -10,5 +10,5 @@
 
     // Misc
     <string name="BASE_URL">http://wdfw.wa.gov/fishing/plants/weekly/</string>
-
+    <string name="shared_prefs_key">shared preferences</string>
 </resources>

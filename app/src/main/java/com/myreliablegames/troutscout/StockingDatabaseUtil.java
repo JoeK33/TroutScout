@@ -32,15 +32,15 @@ public class StockingDatabaseUtil implements Serializable {
 
     private static StockingDatabaseUtil instance;
 
+    private StockingDatabaseUtil() {
+    }
+
     public static StockingDatabaseUtil getInstance() {
         if (instance != null) {
             return instance;
         }
         instance = new StockingDatabaseUtil();
         return instance;
-    }
-
-    private StockingDatabaseUtil() {
     }
 
     public Observable<List<LakeStockingHistory>> getLakeHistories() {
@@ -61,8 +61,47 @@ public class StockingDatabaseUtil implements Serializable {
         return lakeStockingHistoryFactory.getLakeHistories();
     }
 
+    public Observable<List<LakeStockingHistory>> getFavoriteLakes() {
+        final Observable<List<LakeStockingHistory>> favoriteLakes = Observable.create(new ObservableOnSubscribe<List<LakeStockingHistory>>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<List<LakeStockingHistory>> emitter) throws Exception {
+                final List<FavoritedLake> favorites = FavoritesUtil.getFavoriteLakes();
+                final List<LakeStockingHistory> favoriteLakes = new ArrayList<>();
+                final List<LakeStockingHistory> allLakes = new ArrayList<>();
+
+                getLakeHistories().subscribeWith(new DisposableObserver<List<LakeStockingHistory>>() {
+                    @Override
+                    public void onNext(@NonNull List<LakeStockingHistory> lakeStockingHistories) {
+                        allLakes.clear();
+                        allLakes.addAll(lakeStockingHistories);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        emitter.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        for (FavoritedLake favoritedLake : favorites) {
+                            for (LakeStockingHistory lakeStockingHistory : allLakes) {
+                                if (favoritedLake.getName().equals(lakeStockingHistory.getLakeName()) && favoritedLake.getCounty().equals(lakeStockingHistory.getCounty())) {
+                                    favoriteLakes.add(lakeStockingHistory);
+                                }
+                            }
+                        }
+                        emitter.onNext(favoriteLakes);
+                        emitter.onComplete();
+                    }
+                });
+            }
+        });
+
+        return favoriteLakes;
+    }
+
     public Observable<List<StockingEvent>> getRecentLakeStockings() {
-        Logger.e("Subscribed to recent stocking events");
+        Logger.i("Subscribed to recent stocking events");
         final Observable<List<StockingEvent>> recentLakeStockings = Observable.create(new ObservableOnSubscribe<List<StockingEvent>>() {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<List<StockingEvent>> e) throws Exception {
@@ -101,7 +140,7 @@ public class StockingDatabaseUtil implements Serializable {
                     @Override
                     public void onComplete() {
                         e.onComplete();
-                        Logger.e("Recent stocking events complete");
+                        Logger.i("Recent stocking events complete");
                     }
                 });
             }
@@ -116,7 +155,7 @@ public class StockingDatabaseUtil implements Serializable {
         final Observable<List<CountyWrapper>> observable = Observable.create(new ObservableOnSubscribe<List<CountyWrapper>>() {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<List<CountyWrapper>> emitter) throws Exception {
-                Logger.e("Subscribed to counties");
+                Logger.i("Subscribed to counties");
                 getLakeHistories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<LakeStockingHistory>>() {
                     @Override
                     public void onNext(final @NonNull List<LakeStockingHistory> lakeStockingHistories) {
@@ -142,7 +181,7 @@ public class StockingDatabaseUtil implements Serializable {
                         }
 
                         Collections.sort(counties);
-                        Logger.e("County Next");
+                        Logger.i("County Next");
                         emitter.onNext(counties);
                     }
 
@@ -153,7 +192,7 @@ public class StockingDatabaseUtil implements Serializable {
 
                     @Override
                     public void onComplete() {
-                        Logger.e("Counties complete");
+                        Logger.i("Counties complete");
                         emitter.onComplete();
                     }
                 });

@@ -40,11 +40,6 @@ public class RecentStockingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            return;
-        }
-
         adapter = new RecentStockingsAdapter();
         StockingDatabaseUtil stockingDatabaseUtil = StockingDatabaseUtil.getInstance();
 

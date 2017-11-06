@@ -16,12 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@{lakeStockingHistory.lakeName}" />
+        <Button
+            android:id="@+id/favorite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lake_name"
+            android:text="add to favorites"/>
 
         <TextView
             android:id="@+id/lake_county"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/lake_name"
+            android:layout_below="@+id/favorite_button"
             android:text="@{lakeStockingHistory.county}" />
 
         <android.support.v7.widget.RecyclerView

@@ -20,9 +20,9 @@ public class TroutScoutApp extends SugarApp {
         updateStockingDataIfNeeded();
     }
 
-    private static final long TWENTY_FOUR_HOURS_MILLI = 86400000;
+  //  private static final long TWENTY_FOUR_HOURS_MILLI = 86400000;
     //TODO turn back on update timer
- //   private static final long TWENTY_FOUR_HOURS_MILLI = 0;
+    private static final long TWENTY_FOUR_HOURS_MILLI = 0;
 
     private void updateStockingDataIfNeeded() {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("default", Context.MODE_PRIVATE);

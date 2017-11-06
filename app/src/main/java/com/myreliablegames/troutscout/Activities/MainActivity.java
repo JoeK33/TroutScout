@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 
 import com.myreliablegames.troutscout.Fragments.AllLakesFragment;
 import com.myreliablegames.troutscout.Fragments.CountyLakesPagerFragment;
-import com.myreliablegames.troutscout.Fragments.FavoritesFragment;
 import com.myreliablegames.troutscout.Fragments.RecentStockingFragment;
 import com.myreliablegames.troutscout.R;
-import com.myreliablegames.troutscout.StockingDatabaseUtil;
 import com.myreliablegames.troutscout.databinding.ActivityMainBinding;
+
+import Fragments.FavoritesFragment;
 
 public class MainActivity extends AppCompatActivity {
 
