@@ -3,9 +3,9 @@ package com.myreliablegames.troutscout;
 import android.content.res.Resources;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.myreliablegames.troutscout.StockingAPI.AllWebStockingEvents;
-import com.myreliablegames.troutscout.StockingAPI.StockDataAPI;
-import com.myreliablegames.troutscout.StockingAPI.WebStockingEvent;
+import com.myreliablegames.troutscout.API.AllWebStockingEvents;
+import com.myreliablegames.troutscout.API.StockDataAPI;
+import com.myreliablegames.troutscout.API.WebStockingEvent;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 

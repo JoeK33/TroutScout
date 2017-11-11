@@ -10,5 +10,7 @@
 
     // Misc
     <string name="BASE_URL">http://wdfw.wa.gov/fishing/plants/weekly/</string>
+    <string name="BASE_WEATHER_URL">https://api.weather.gov/points/</string>
     <string name="shared_prefs_key">shared preferences</string>
+    <string name="weather_fragment_title">Weather</string>
 </resources>

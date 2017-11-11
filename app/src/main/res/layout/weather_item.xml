@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="weatherForecast"
+            type="com.myreliablegames.troutscout.API.WeatherForecastModel.WeatherForecast" />
+    </data>
+
+        <RelativeLayout
+            android:id="@+id/item_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/weather_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@{weatherForecast.name}"
+                tools:text="Weather" />
+        </RelativeLayout>
+</layout>

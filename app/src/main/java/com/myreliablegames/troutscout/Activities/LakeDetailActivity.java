@@ -1,8 +1,9 @@
 package com.myreliablegames.troutscout.Activities;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.myreliablegames.troutscout.Adapters.LakesAdapter;
@@ -27,7 +28,7 @@ public class LakeDetailActivity extends AppCompatActivity {
 
         Fragment fragment = LakeDetailFragment.newInstance(history);
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frame, fragment)
                 .commit();

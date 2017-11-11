@@ -1,4 +1,4 @@
-package com.myreliablegames.troutscout.StockingAPI;
+package com.myreliablegames.troutscout.API;
 
 import com.myreliablegames.troutscout.StockingEvent;
 
