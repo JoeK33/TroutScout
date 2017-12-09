@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.orm.SugarApp;
+import com.orm.SugarDb;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -18,6 +19,8 @@ public class TroutScoutApp extends SugarApp {
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
+        SugarDb db = new SugarDb(this);
+        db.onCreate(db.getWritableDatabase());
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         updateStockingDataIfNeeded();
     }
