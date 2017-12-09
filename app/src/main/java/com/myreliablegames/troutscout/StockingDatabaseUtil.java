@@ -69,7 +69,7 @@ public class StockingDatabaseUtil implements Serializable {
                 final List<LakeStockingHistory> favoriteLakes = new ArrayList<>();
                 final List<LakeStockingHistory> allLakes = new ArrayList<>();
 
-                getLakeHistories().subscribeWith(new DisposableObserver<List<LakeStockingHistory>>() {
+                getLakeHistories().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<LakeStockingHistory>>() {
                     @Override
                     public void onNext(@NonNull List<LakeStockingHistory> lakeStockingHistories) {
                         allLakes.clear();

@@ -2,6 +2,7 @@ package com.myreliablegames.troutscout;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joda.time.LocalDate;
@@ -97,5 +98,29 @@ public class LakeStockingEvent implements Comparable<LakeStockingEvent>, Seriali
     @Override
     public int compareTo(@NonNull LakeStockingEvent o) {
         return getStockDate().compareTo(o.getStockDate());
+    }
+
+    private String STEELHEAD = "Steelhead";
+    private String RAINBOW = "Rainbow";
+    private String BROWN = "Brown Trout";
+    private String CUTTHROAT = "Cutthroat";
+
+    public int getFishDrawableId() {
+        if (fishSpecies.equals(STEELHEAD)) {
+            return R.drawable.ic_steelhead_trout;
+        } else if (fishSpecies.equals(RAINBOW)) {
+            return R.drawable.ic_rainbow_trout;
+        } else if (fishSpecies.equals(BROWN)) {
+            return R.drawable.ic_brown_trout;
+        } else if (fishSpecies.equals(CUTTHROAT)) {
+            return R.drawable.ic_cutthroat_trout;
+        } else {
+            return R.drawable.ic_unknown_trout;
+        }
+    }
+
+    @BindingAdapter("android:src")
+    public static void setImageViewResource(ImageView imageView, int resource) {
+        imageView.setImageResource(resource);
     }
 }

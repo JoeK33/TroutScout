@@ -61,6 +61,16 @@ public class WeatherFragment extends Fragment {
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding.recyclerview.setAdapter(adapter);
+        binding.weatherTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (binding.recyclerview.getVisibility() == View.VISIBLE) {
+                    binding.recyclerview.setVisibility(View.GONE);
+                } else if (binding.recyclerview.getVisibility() == View.GONE) {
+                    binding.recyclerview.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override

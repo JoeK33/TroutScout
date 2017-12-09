@@ -3,24 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="weatherForecast"
             type="com.myreliablegames.troutscout.API.WeatherForecastModel.WeatherForecast" />
     </data>
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="20dp"
+        card_view:cardElevation="5dp">
+    <RelativeLayout
+        android:id="@+id/item_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
-        <RelativeLayout
-            android:id="@+id/item_view"
+        <TextView
+            android:id="@+id/weather_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:maxLines="2"
+            android:lines="2"
+            android:ellipsize="marquee"
+            android:layout_centerHorizontal="true"
+            android:text="@{weatherForecast.name}"
+            android:textStyle="bold"
+            tools:text="Wednesday Night" />
+
 
             <TextView
-                android:id="@+id/weather_name"
+                android:id="@+id/temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="@{weatherForecast.name}"
-                tools:text="Weather" />
-        </RelativeLayout>
+                android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:layout_below="@id/weather_name"
+                android:text="@{weatherForecast.temperature + ' ' + weatherForecast.temperatureUnit}"
+                tools:text="69 F" />
+
+            <TextView
+                android:id="@+id/windspeed"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/temperature"
+                android:text="@{weatherForecast.windSpeed + ' ' + weatherForecast.windDirection}"
+                tools:text="5 mph SW" />
+
+        <TextView
+            android:id="@+id/short_forecast"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@id/windspeed"
+            android:maxLines="3"
+            android:lines="3"
+            android:ellipsize="marquee"
+            android:text="@{weatherForecast.shortForecast}"
+            tools:text="light rain" />
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
 </layout>

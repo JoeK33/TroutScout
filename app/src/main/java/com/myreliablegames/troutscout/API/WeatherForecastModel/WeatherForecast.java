@@ -88,8 +88,8 @@ public class WeatherForecast {
         this.isDaytime = isDaytime;
     }
 
-    public Integer getTemperature() {
-        return temperature;
+    public String getTemperature() {
+        return String.valueOf(temperature);
     }
 
     public void setTemperature(Integer temperature) {

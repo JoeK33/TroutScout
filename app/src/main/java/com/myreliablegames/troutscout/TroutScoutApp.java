@@ -2,6 +2,7 @@ package com.myreliablegames.troutscout;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.orm.SugarApp;
 
@@ -17,6 +18,7 @@ public class TroutScoutApp extends SugarApp {
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         updateStockingDataIfNeeded();
     }
 

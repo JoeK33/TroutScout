@@ -77,9 +77,9 @@ public class LakeDetailFragment extends Fragment implements OnMapReadyCallback {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lake_details, container, false);
 
         if (FavoritesUtil.isFavorited(history)) {
-            binding.favoriteButton.setText("Remove from Favorites");
+            binding.favoriteButton.setBackground(getResources().getDrawable(R.drawable.ic_favorite_star));
         } else {
-            binding.favoriteButton.setText("Add to Favorites");
+            binding.favoriteButton.setBackground(getResources().getDrawable(R.drawable.ic_unfavorited_star));
         }
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -90,14 +90,13 @@ public class LakeDetailFragment extends Fragment implements OnMapReadyCallback {
                 if (BuildConfig.PAID_VERSION) {
                     if (FavoritesUtil.isFavorited(history)) {
                         FavoritesUtil.removeLakeFromFavorites(history);
-                        binding.favoriteButton.setText("Add to Favorites");
+                        binding.favoriteButton.setBackground(getResources().getDrawable(R.drawable.ic_unfavorited_star));
                     } else {
                         FavoritesUtil.addLakeToFavorites(history);
-                        binding.favoriteButton.setText("Remove from Favorites");
+                        binding.favoriteButton.setBackground(getResources().getDrawable(R.drawable.ic_favorite_star));
                     }
                 } else {
-                    binding.favoriteButton.setText("Favorite lakes are available in the paid version of Trout Scout");
-
+                    binding.favoriteButton.setBackground(getResources().getDrawable(R.drawable.ic_unfavorited_star));
                 }
             }
         });

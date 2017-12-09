@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/stocking_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="80dp">
 
         <TextView
             android:id="@+id/stocking_date"
@@ -21,10 +21,20 @@
             android:id="@+id/fish_species"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_below="@+id/fish_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{lakeStockingEvent.fishSpecies}"
             tools:text="Rainbow"/>
+
+        <ImageView
+            android:id="@+id/fish_image"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:src="@{lakeStockingEvent.getFishDrawableId}" />
+
 
         <TextView
             android:id="@+id/fish_number"

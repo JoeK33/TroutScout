@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -14,20 +15,35 @@
         <TextView
             android:id="@+id/lake_name"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@{lakeStockingHistory.lakeName}" />
-        <Button
-            android:id="@+id/favorite_button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lake_name"
-            android:text="add to favorites"/>
+            android:layout_toLeftOf="@+id/favorite_button"
+            android:layout_margin="5dp"
+            android:layout_toStartOf="@+id/favorite_button"
+            android:singleLine="true"
+            android:textSize="20sp"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:text="@{lakeStockingHistory.lakeName}"
+            tools:text="Lake Fishalot"/>
+
+        <ImageButton
+            android:id="@+id/favorite_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/favorite_button"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_unfavorited_star"/>
 
         <TextView
             android:id="@+id/lake_county"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/favorite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:singleLine="true"
+            android:layout_below="@+id/lake_name"
+            android:layout_margin="5dp"
+            tools:text="King County"
             android:text="@{lakeStockingHistory.county}" />
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,17 +53,18 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_below="@+id/lake_county"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             tools:context="com.myreliablegames.troutscout.Activities.LakeDetailActivity" />
 
         <FrameLayout
             android:id="@+id/weather_fragment"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/map"
             />
 
         <android.support.v7.widget.RecyclerView
+
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
